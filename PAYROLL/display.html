@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GRC Payroll Program - Display</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Trebuchet MS', sans-serif;
+      background: linear-gradient(135deg, #fff176, #ffee58);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      width: 450px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #f9a825;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 6px 0;
+      line-height: 1.4;
+      color: #795548;
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background-color: #fdd835;
+      margin: 20px 0;
+    }
+
+    .deductions {
+      margin-top: 10px;
+    }
+
+    .deductions p {
+      margin-left: 15px;
+    }
+
+    .netpay {
+      font-size: 18px;
+      font-weight: bold;
+      color: #f57f17;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .btn {
+      background-color: #fbc02d;
+      color: #333;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background-color: #f9a825;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>PAYROLL PROGRAM</h1>
+    <p><b>ID:</b> <span id="id"></span></p>
+    <p><b>Name:</b> <span id="lname"></span>, <span id="fname"></span> <span id="mname"></span></p>
+    <p><b>Position:</b> <span id="position"></span></p>
+    <p><b>Rate per Day:</b> ₱<span id="rate"></span></p>
+    <p><b>Work Days:</b> <span id="days"></span></p>
+    <p><b>Gross Pay:</b> ₱<span id="gross"></span></p>
+
+    <hr />
+
+    <div class="deductions">
+      <p><b>SSS (5%):</b> ₱<span id="sss"></span></p>
+      <p><b>PAG-IBIG (3%):</b> ₱<span id="pagibig"></span></p>
+      <p><b>PHILHEALTH (2%):</b> ₱<span id="philhealth"></span></p>
+      <p><b>Tax (5%):</b> ₱<span id="tax"></span></p>
+      <p><b>Total Deductions:</b> ₱<span id="totaldeduction"></span></p>
+    </div>
+
+    <hr />
+
+    <p class="netpay">Net Pay: ₱<span id="net"></span></p>
+
+    <button class="btn" onclick="window.print()">🖨️ Print Payslip</button>
+    <button class="btn" onclick="goBack()">🔙 Back to Form</button>
+  </div>
+
+  <script>
+    const id = localStorage.getItem("id");
+    const lname = localStorage.getItem("lname");
+    const fname = localStorage.getItem("fname");
+    const mname = localStorage.getItem("mname");
+    const position = localStorage.getItem("position");
+    const rate = parseFloat(localStorage.getItem("rate"));
+    const days = parseInt(localStorage.getItem("days"));
+
+    if (!id || !lname || !fname || !mname || !position || isNaN(rate) || isNaN(days)) {
+      alert("Missing payroll data. Redirecting to input form.");
+      window.location.href = "index.html";
+    }
+
+    const gross = rate * days;
+    const sss = gross * 0.05;
+    const pagibig = gross * 0.03;
+    const philhealth = gross * 0.02;
+    const tax = gross * 0.05;
+    const totalDeduction = sss + pagibig + philhealth + tax;
+    const net = gross - totalDeduction;
+
+    document.getElementById("id").textContent = id;
+    document.getElementById("lname").textContent = lname;
+    document.getElementById("fname").textContent = fname;
+    document.getElementById("mname").textContent = mname;
+    document.getElementById("position").textContent = position;
+    document.getElementById("rate").textContent = rate.toFixed(2);
+    document.getElementById("days").textContent = days;
+    document.getElementById("gross").textContent = gross.toFixed(2);
+    document.getElementById("sss").textContent = sss.toFixed(2);
+    document.getElementById("pagibig").textContent = pagibig.toFixed(2);
+    document.getElementById("philhealth").textContent = philhealth.toFixed(2);
+    document.getElementById("tax").textContent = tax.toFixed(2);
+    document.getElementById("totaldeduction").textContent = totalDeduction.toFixed(2);
+    document.getElementById("net").textContent = net.toFixed(2);
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
